@@ -14,36 +14,27 @@ inline void cflag(std::string s){std::cout << s << std::endl;}
 //---------------------------------------
 
 void solve() {
-    int n, k; 
-    std::cin >> n >> k;
-    std::vector<int> v(n, 0);
-    for(auto &i: v) {
-        std::cin >> i;
+    int n, k;
+    std::string s;
+    std::cin >> n >> k >> s;
+    std::map<char, int> m;
+    for(auto &i: s) {
+        m[i]++;
     }
-    int curr = 1e9;
-    sort(v.begin(), v.end());
-    int sum = 0;
-    bool nn = true;
-    int ok = k;
-    if(k == 4) k = 2;
-    int fok = 0;
-    for(int i = 0; i < n; i++) {
-        if((i == 0 && v[i] == 1)) continue;
-        if(v[i] % ok == 0 && ok != 4) {
-            std::cout << "ans: " << 0 << std::endl;
-            return;
+    int ef = 0, oc = 0;
+    for(auto &[x, y]: m) {
+        if(k == 0 && y % 2) {
+            oc++;
         }
-        else if(v[i] % k == 0 && ok == 4) {
-            fok++;
+        else if(y % 2 == 1) {
+            y -= 1;
+            k -= 1;
         }
-        curr = std::min(curr, k - (v[i] % k));
+        ef += y;
     }
-    if(ok == 4) {
-        if(fok % 2 == 0 && fok != 0) std::cout << "ans: " << 0 << std::endl;
-        else if(fok == 0) std::cout << "ans: " << 2 << std::endl;
-        else std::cout << "ans: " << 1 << std::endl;
-    }
-    else std::cout << "ans: " << curr << std::endl;
+    bool res = 0;
+    if(oc <= 1 and k == 0 || oc <= 1 && ef >= k) res = 1;
+    std::cout << (res? "YES": "NO") << std::endl;
 }
 
 int main() {
